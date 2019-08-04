@@ -10,3 +10,25 @@ publishdir = "./public/"
   medium = "vitkhab"
   twitter = "vitkhab"
   instagram = "vitkhab"
+
+## Main Menu
+[[menu.main]]
+    name = "Blog"
+    weight = 100
+    identifier = "blog"
+    url = "/blog"
+[[menu.main]]
+    name = "Presentations"
+    weight = 200
+    identifier = "presentations"
+    url = "/presentations"
+[[menu.main]]
+    name = "Projects"
+    weight = 300
+    identifier = "projects"
+    url = "/projects"
+[[menu.main]]
+    name = "About Me"
+    identifier = "about"
+    weight = 400
+    url = "/"
