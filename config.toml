@@ -3,3 +3,9 @@ languageCode = "en-us"
 title = "Vitaly Khabarov"
 theme = "mediumish"
 publishdir = "./public/"
+
+[params.social]
+  github = "vitkhab"
+  linkedin = "vitkhab"
+  medium = "vitkhab"
+  twitter = "vitkhab"
