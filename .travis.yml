@@ -1,0 +1,18 @@
+---
+install:
+- wget -O /tmp/hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.56.3/hugo_0.56.3_Linux-64bit.deb
+- sudo dpkg -i /tmp/hugo.deb
+
+script:
+- hugo
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: ./public/
+  target_branch: gh-pages
+  keep_history: true
+  fqdn: vitkhab.pro
+  on:
+    branch: master
