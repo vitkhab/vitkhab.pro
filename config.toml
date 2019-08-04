@@ -1,4 +1,4 @@
-baseURL = "http://vitkhab.pro/"
+baseURL = "https://vitkhab.pro"
 languageCode = "en-us"
 title = "Vitaly Khabarov"
 theme = "mediumish"
