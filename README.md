@@ -1,0 +1,1 @@
+![Deployment Status](https://travis-ci.org/vitkhab/vitkhab.pro.svg?branch=master)
