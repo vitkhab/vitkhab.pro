@@ -2,7 +2,7 @@
 title: "Команды и топологии"
 date: 2019-12-17T19:40:00+03:00
 publishdate: 2019-12-26T14:47:00+03:00
-summary: "DevOps Moscow MeetUp в Райффайзенбанке"
+summary: "17 декабря 2019 прошел DevOps Moscow MeetUp в Райффайзенбанке. На митапе обсудили фреймворк Team Topologies."
 tags: ["team topologies", "meetup", "presentation", "devops", "platform team", "enabling team", "stream-aligned team", "complicated-subsystem team"]
 draft: false
 comments: true
