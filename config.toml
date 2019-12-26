@@ -4,6 +4,7 @@ title = "Vitaly Khabarov"
 theme = "mediumish"
 publishdir = "./public/"
 copyright = "Vitaly Khabarov - All rights reserved"
+googleAnalytics = "UA-154958457-1"
 
 [params.author]
   name = "Виталик Хабаров"
