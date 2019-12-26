@@ -3,6 +3,7 @@ languageCode = "ru-ru"
 title = "Vitaly Khabarov"
 theme = "mediumish"
 publishdir = "./public/"
+summaryLength = 30
 copyright = "Vitaly Khabarov - All rights reserved"
 disqusShortname = "vitkhab-pro"
 googleAnalytics = "UA-154958457-1"
