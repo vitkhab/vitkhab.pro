@@ -3,17 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://vitkhab.pro/categories/</loc>
+    <loc>https://vitkhab.pro/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://vitkhab.pro/tags/</loc>
+    <loc>https://vitkhab.pro/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://vitkhab.pro/</loc>
+    <loc>https://vitkhab.pro/</loc>
     <priority>0</priority>
   </url>
   
