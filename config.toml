@@ -8,6 +8,9 @@ copyright = "Vitaly Khabarov - All rights reserved"
 disqusShortname = "vitkhab-pro"
 googleAnalytics = "UA-154958457-1"
 
+[params]
+  description = "Блог о технологиях и разработке цифровых продуктов"
+
 [params.author]
   name = "Виталик Хабаров"
   thumbnail = "/images/vitkhab.png"
