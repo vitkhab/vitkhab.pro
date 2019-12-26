@@ -9,7 +9,8 @@
         ================================================== -->
         <section class="recent-posts">            
             <div class="section-title">             
-                <h2><span>{{ .CurrentSection.Title | default "All Posts" }}</span></h2>     
+                {{ $sectionTitle := cond (isset .Data "Term") (printf "Страницы с тегом - %s" .Data.Term) .CurrentSection.Title | default "All Posts"}}
+                <h2><span>{{ $sectionTitle }}</span></h2>
             </div>            
             <div class="row listrecent">
                 {{ $post_paginator := .Paginate (.Pages) 6 }}
