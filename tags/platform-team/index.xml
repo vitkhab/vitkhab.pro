@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>platform team on Vitaly Khabarov</title>
+    <link>https://vitkhab.pro/tags/platform-team/</link>
+    <description>Recent content in platform team on Vitaly Khabarov</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <copyright>Vitaly Khabarov - All rights reserved</copyright>
+    <lastBuildDate>Tue, 17 Dec 2019 19:40:00 +0300</lastBuildDate>
+    
+	<atom:link href="https://vitkhab.pro/tags/platform-team/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Команды и топологии</title>
+      <link>https://vitkhab.pro/presentations/2019-12-17-team-topologies/</link>
+      <pubDate>Tue, 17 Dec 2019 19:40:00 +0300</pubDate>
+      
+      <guid>https://vitkhab.pro/presentations/2019-12-17-team-topologies/</guid>
+      <description>DevOps Moscow MeetUp в Райффайзенбанке</description>
+    </item>
+    
+  </channel>
+</rss>
