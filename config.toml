@@ -1,8 +1,14 @@
 baseURL = "https://vitkhab.pro"
-languageCode = "en-us"
+languageCode = "ru-ru"
 title = "Vitaly Khabarov"
 theme = "mediumish"
 publishdir = "./public/"
+copyright = "Vitaly Khabarov - All rights reserved"
+
+[params.author]
+  name = "Виталик Хабаров"
+  thumbnail = "/images/vitkhab.png"
+  description = "Энтузиаст разработки цифровых продуктов"
 
 [params.social]
   github = "vitkhab"
@@ -11,24 +17,41 @@ publishdir = "./public/"
   twitter = "vitkhab"
   instagram = "vitkhab"
 
+[params.index]
+  picture = "/images/vitkhab.png"
+  title = "Виталик Хабаров"
+  subtitle = "Энтузиаст разработки цифровых продуктов"
+  mdtext = '''
+Работаю ведущим инженером в Экспресс 42. Занимаюсь анализом кейсов, процессов и
+инструментов у клиентов и в индустрии. Участвовал и руководил проектами
+по оптимизации и автоматизации процессов разработки, тестирования и
+эксплуатации.
+
+Всегда рад узнать что-то новое, получить опыт и поделиться своими
+знаниями с другими.
+
+Веду подкаст [DevOps Дефлопе](https://devopsdeflope.ru/).
+'''
+  alertbar = true
+
 ## Main Menu
 [[menu.main]]
-    name = "Blog"
+    name = "Статьи"
     weight = 100
     identifier = "blog"
     url = "/blog"
 [[menu.main]]
-    name = "Presentations"
+    name = "Презентации"
     weight = 200
     identifier = "presentations"
     url = "/presentations"
 [[menu.main]]
-    name = "Projects"
+    name = "Проекты"
     weight = 300
     identifier = "projects"
     url = "/projects"
 [[menu.main]]
-    name = "About Me"
+    name = "Обо мне"
     identifier = "about"
     weight = 400
     url = "/"
