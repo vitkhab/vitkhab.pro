@@ -179,11 +179,20 @@ git push -u origin devel
 </code></pre><p>Тему можешь скачать в директорию <code>&lt;OWNER&gt;.github.io/themes</code> или склонировать репозиторий с темой в ту же директорию. Я предпочитаю использовать субмодули. Темы можно легко обновлять из источника. Тему можно дополнить модулями в директории <code>&lt;OWNER&gt;.github.io/layouts</code>. Почитать о выборе между использование <code>git clone</code> или <code>git submodule</code> для тем Hugo можешь в <a href="https://discourse.gohugo.io/t/adding-a-theme-as-a-submodule-or-clone/8789">обсуждении</a>.</p>
 <h3 id="---hugo">Шаг пятый. Настройка Hugo.</h3>
 <p>Настало время настроить Hugo. Отредактируй файл <code>config.toml</code> до следующего содержания, не забудь изменить параметры под свой сайт:</p>
-<pre><code>baseURL = &quot;https://&lt;OWNER&gt;.github.io/&quot; # Адрес твоего сайта
-languageCode = &quot;ru-ru&quot;                 # Язык сайта, для английского используйте &quot;en-us&quot;
-title = &quot;Супер бложик&quot;                 # Название твоего сайт
-theme = &quot;mediumish&quot;                    # Используемая тема
-publishdir = &quot;./public/&quot;               # Сюда Hugo сохранит сгенерированный сайт
+<pre><code># Адрес твоего сайта
+baseURL = &quot;https://&lt;OWNER&gt;.github.io/&quot;
+
+# Язык сайта, для английского используй &quot;en-us&quot;
+languageCode = &quot;ru-ru&quot;
+
+# Название твоего сайт
+title = &quot;Супер бложик&quot;
+
+# Используемая тема
+theme = &quot;mediumish&quot;
+
+# Сюда Hugo сохранит сгенерированный сайт
+publishdir = &quot;./public/&quot;
 </code></pre><h3 id="----">Шаг шестой. Директория для публикации.</h3>
 <p>Исходный код и сам сайт хранятся в разных ветках. Переключаться между ними и переносить изменения - неудобно. Поэтому подключи ветку <code>master</code> в рабочую директорию в каталог <code>public</code> командами:</p>
 <pre><code>git worktree add -B master public origin/master
@@ -203,24 +212,42 @@ popd
 </code></pre><p>И тут твой сайт должен бы стать доступным. Но, в силу неизвестных мне причин, GitHub Pages стабильно подхватывает новый сайт только после второго-третьего коммита. Не растраивайся, скоро мы его сделаем.</p>
 <h3 id="----2">Шаг восьмой. Первый пост.</h3>
 <p>Создай первый пост командой:</p>
-<pre><code>$ hugo new blog/first-post.md
+<pre><code>hugo new blog/first-post.md
 </code></pre><p>Hugo подготовит шаблон для новой страницы. Открой файл <code>blog/first-post.md</code> и отредактируй его. В начале ты увидишь блок с метаданными поста, после которых начинается сам текст статьи в формате <code>markdown</code>, хотя ты можешь использовать <a href="https://gohugo.io/content-management/formats/">другой формат</a>.</p>
 <pre><code>---
-title: &quot;Блог на Github Pages для начинающих&quot;                              # Название статьи
-date: 2019-12-25T21:32:05+03:00                                           # Дата создания статьи
-tags: [&quot;github pages&quot;, &quot;blog&quot;, &quot;hugo&quot;]                                    # Тэги статьи
-draft: true                                                               # Флаг черновика, пока он в значении &quot;true&quot;, Hugo не будет обрабатывать эту статью
-comments: true                                                            # Включены ли комментарии
-summary: &quot;Пошаговая инструкция по созданию блога на Github Pages на Hugo&quot; # Краткое описание статьи
+# Название статьи
+title: &quot;Блог на Github Pages для начинающих&quot;
+
+# Дата создания статьи
+date: 2019-12-25T21:32:05+03:00
+
+# Тэги статьи
+tags: [&quot;github pages&quot;, &quot;blog&quot;, &quot;hugo&quot;]
+
+# Флаг черновика, пока он в значении &quot;true&quot;, Hugo не будет обрабатывать эту статью
+draft: false
+
+# Включены ли комментарии
+comments: true
+
+# Краткое описание статьи
+summary: &quot;Пошаговая инструкция по созданию блога на Github Pages на Hugo&quot;
 ---
 </code></pre><p>Конечно же, первый пост должен быть о том, как сделать свой собственный блог. Можешь взять за основу <a href="https://raw.githubusercontent.com/vitkhab/vitkhab.pro/master/content/blog/2020-01-03-how-to-create-blog/index.md">исходный текст статьи, которую ты сейчас читаешь</a> ;)</p>
 <h3 id="----3">Шаг девятый. Навигационное меню.</h3>
 <p>Создай на сайте навигационное меню. Для этого добавь в файл <code>config.toml</code> строки:</p>
 <pre><code>[[menu.main]]
-    name = &quot;Статьи&quot;     # Отображаемое название раздела
-    weight = 100        # Вес для сортировки пунктов меню, чем меньше - тем раньше пункт будет отображен
-    identifier = &quot;blog&quot; # Идентификатор родителя для вложенных пунктов, не все темы поддерживают вложенность
-    url = &quot;/blog&quot;       # Путь до раздела со статьями, соответсвует имени папки внутри &lt;OWNER&gt;.github.io/content/
+    # Отображаемое название раздела
+    name = &quot;Статьи&quot;
+
+    # Вес для сортировки пунктов меню, чем меньше - тем раньше пункт будет отображен
+    weight = 100
+
+    # Идентификатор родителя для вложенных пунктов, не все темы поддерживают вложенность
+    identifier = &quot;blog&quot;
+
+    # Путь до раздела со статьями, соответствует имени папки внутри &lt;OWNER&gt;.github.io/content/
+    url = &quot;/blog&quot;
 </code></pre><p>Для добавления нового пункта, добавь еще один блок <code>[[menu.main]]</code> целиком.</p>
 <h3 id="--profit">Шаг десятый. Profit!</h3>
 <p>Ты проделал всю необходимую подготовительную работу. Сохрани изменения кодовой базы:</p>
