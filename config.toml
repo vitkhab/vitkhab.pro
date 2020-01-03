@@ -9,7 +9,7 @@ disqusShortname = "vitkhab-pro"
 googleAnalytics = "UA-154958457-1"
 
 [params]
-  description = "Блог о технологиях и разработке цифровых продуктов"
+  description = "прo технологии и разработку цифровых продуктов"
 
 [params.author]
   name = "Виталик Хабаров"
