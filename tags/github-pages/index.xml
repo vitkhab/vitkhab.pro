@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Vitaly Khabarov</title>
-    <link>https://vitkhab.pro/</link>
-    <description>Recent content on Vitaly Khabarov</description>
+    <title>github pages on Vitaly Khabarov</title>
+    <link>https://vitkhab.pro/tags/github-pages/</link>
+    <description>Recent content in github pages on Vitaly Khabarov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
     <copyright>Vitaly Khabarov - All rights reserved</copyright>
     <lastBuildDate>Fri, 03 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://vitkhab.pro/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://vitkhab.pro/tags/github-pages/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       
       <guid>https://vitkhab.pro/blog/2020-01-03-how-to-create-blog/</guid>
       <description>Пошаговая инструкция по созданию бесплатного блога или сайта на Github Pages с использованием Hugo для начинающих.</description>
-    </item>
-    
-    <item>
-      <title>Команды и топологии</title>
-      <link>https://vitkhab.pro/presentations/2019-12-17-team-topologies/</link>
-      <pubDate>Tue, 17 Dec 2019 19:40:00 +0300</pubDate>
-      
-      <guid>https://vitkhab.pro/presentations/2019-12-17-team-topologies/</guid>
-      <description>17 декабря 2019 прошел DevOps Moscow MeetUp в Райффайзенбанке. На митапе обсудили фреймворк Team Topologies.</description>
     </item>
     
   </channel>
