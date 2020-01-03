@@ -153,6 +153,7 @@ summary: "Пошаговая инструкция по созданию блог
 ```
 git add .
 git commit -m 'Add index page, first post, navigation menu and config'
+git push
 ```
 
 Сгенерируй сайт и загрузи изменения на Github.
