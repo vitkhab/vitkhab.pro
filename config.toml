@@ -24,6 +24,9 @@ enableGitInfo = true
   twitter = "vitkhab"
   instagram = "vitkhab"
 
+[params.metrics]
+  yandexMetrika = "61600576"
+
 [params.index]
   picture = "/images/vitkhab.png"
   title = "Виталик Хабаров"
