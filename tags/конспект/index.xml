@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Статьи on Vitaly Khabarov</title>
-    <link>https://vitkhab.pro/blog/</link>
-    <description>Recent content in Статьи on Vitaly Khabarov</description>
+    <title>Конспект on Vitaly Khabarov</title>
+    <link>https://vitkhab.pro/tags/%D0%BA%D0%BE%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82/</link>
+    <description>Recent content in Конспект on Vitaly Khabarov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
     <copyright>Vitaly Khabarov - All rights reserved</copyright>
+    <lastBuildDate>Tue, 26 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://vitkhab.pro/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://vitkhab.pro/tags/%D0%BA%D0%BE%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +19,6 @@
       
       <guid>https://vitkhab.pro/blog/2020-05-26-notion-office-hourse-tiago-forte/</guid>
       <description>Тиаго пригласили рассказать об организации работы над своим блогом. Он также рассказал о разделении организационной и креативной деятельности, философии создания систем и используемых инструментах.</description>
-    </item>
-    
-    <item>
-      <title>Десять шагов к личному блогу на Github Pages.</title>
-      <link>https://vitkhab.pro/blog/2020-01-03-how-to-create-blog/</link>
-      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://vitkhab.pro/blog/2020-01-03-how-to-create-blog/</guid>
-      <description>Пошаговая инструкция по созданию бесплатного блога или сайта на Github Pages с использованием Hugo для начинающих.</description>
     </item>
     
   </channel>

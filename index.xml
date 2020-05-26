@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
     <copyright>Vitaly Khabarov - All rights reserved</copyright>
-    <lastBuildDate>Fri, 03 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://vitkhab.pro/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Notion Office Hours: Tiago Forte</title>
+      <link>https://vitkhab.pro/blog/2020-05-26-notion-office-hourse-tiago-forte/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://vitkhab.pro/blog/2020-05-26-notion-office-hourse-tiago-forte/</guid>
+      <description>Тиаго пригласили рассказать об организации работы над своим блогом. Он также рассказал о разделении организационной и креативной деятельности, философии создания систем и используемых инструментах.</description>
+    </item>
     
     <item>
       <title>Десять шагов к личному блогу на Github Pages.</title>
