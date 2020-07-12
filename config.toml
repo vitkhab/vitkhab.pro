@@ -14,7 +14,7 @@ enableGitInfo = true
 
 [params.author]
   name = "Виталик Хабаров"
-  thumbnail = "/images/vitkhab.png"
+  thumbnail = "/images/vitkhab.webp"
   description = "Энтузиаст разработки цифровых продуктов"
 
 [params.social]
@@ -28,7 +28,7 @@ enableGitInfo = true
   yandexMetrika = "61600576"
 
 [params.index]
-  picture = "/images/vitkhab.png"
+  picture = "/images/vitkhab.webp"
   title = "Виталик Хабаров"
   subtitle = "Энтузиаст разработки цифровых продуктов"
   mdtext = '''
