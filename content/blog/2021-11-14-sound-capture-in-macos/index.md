@@ -66,7 +66,7 @@ MacOS позволяет дублировать звук на несколько
 
 Единственное приложение, которое не запросило у меня разрешения на загрузку своего драйвера в Security & Privacy. Я его устанавливал последним из всего списка приложений. Потому возможно, BlackHole переиспользовал ранее поставленный драйвер.
 
-Проект с [открытым исходным кодом][7]. Streamlabs [рекомендуют][8] его для использования. Скачать можно [подписавшись на рассылку][9] или через Homebrew.
+Проект с [открытым исходным кодом][7]. Streamlabs [рекомендуют][8] его для использования. Скачать можно [подписавшись на рассылку][9] или через Homebrew. [Инструкция по удалению][25] доступна на GitHub.
 
 ```bash
 brew install blackhole-2ch
@@ -76,16 +76,18 @@ brew install blackhole-16ch
 [7]: https://github.com/ExistentialAudio/BlackHole
 [8]: https://existential.audio/blackhole/
 [9]: https://streamlabs.com/content-hub/post/capturing-desktop-audio-in-streamlabs-obs-for-mac
+[25]: https://github.com/ExistentialAudio/BlackHole#uninstallation-instructions
 
 ## VB-Cable
 
 Виртуальный интерфейс аудио-мост. Через графический интерфейс можно посмотреть наличие сигнала. Если нужно больше одного интерфейса, можно поставить еще четыре (отдельными приложениями). При установке требует разрешить загрузку своего драйвера.
 
-Скачать можно на [сайте разработчика][10].
+Скачать можно на [сайте разработчика][10]. Удалить можно по [инструкции][26].
 
 ![VB-Cable UI](images/vb-cable-ui.png)
 
 [10]: https://vb-audio.com/Cable/
+[26]: https://remarkablemark.org/blog/2020/12/31/uninstall-vb-cable-mac/
 
 ## Loopback
 
@@ -97,13 +99,13 @@ brew install blackhole-16ch
 
 Все программы разработчика требуют [установки Audio Capture Engine][11]. Для этого придется перезагрузиться в Recovery enironment и разрешить в Security Policy установку kernel extension'ов от одобренных разработчиков.
 
-Скачать и купить можно на [сайте разработчика][12].
+Скачать и купить можно на [сайте разработчика][12]. Удалить можно по [инструкции][27].
 
 ![Loopback interface](images/loopback-interface.png)
 
 [11]: https://rogueamoeba.com/support/knowledgebase/?showArticle=ACE-BigSur
 [12]: https://rogueamoeba.com/loopback/
-
+[27]: https://rogueamoeba.com/support/knowledgebase/?showArticle=UninstallingLoopback
 
 ## SWB Audio Capture
 
@@ -129,13 +131,14 @@ brew install blackhole-16ch
 
 Позволяет мониторить выходную дорожку и микрофон. У меня работает с заметной задержкой.
 
-Скачать можно на [сайте разработчика][20].
+Скачать можно на [сайте разработчика][20]. Удалить можно по [инструкции][28].
 
 ![SWB Audio interface](images/swb-audio-interface.png)
 
 [19]: #swb-audio-capture
 [20]: https://shinywhitebox.com/swb-audio-app
 [24]: #swb-audio-watermark
+[28]: https://support.shinywhitebox.com/hc/en-us/articles/360059392351-Uninstalling-SWB-Audio-App-Capture
 
 ### iShow Instant
 
@@ -145,11 +148,12 @@ brew install blackhole-16ch
 
 Подойдет для записи экрана, для стриминга через OBS. Но не более.
 
-Скачать можно на [сайте разработчика][21].
+Скачать можно на [сайте разработчика][21]. Удалить можно по [инструкции][29].
 
 ![iShow Instant interface](images/ishow-instant-interface.png)
 
 [21]: https://shinywhitebox.com/ishowu-instant
+[29]: https://support.shinywhitebox.com/hc/en-us/articles/360042791151-How-to-Uninstall-iShowU-Instant
 
 ## OBS
 
