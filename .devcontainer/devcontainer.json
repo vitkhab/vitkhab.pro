@@ -1,0 +1,15 @@
+{
+	"name": "Hugo",
+    "image": "peaceiris/hugo:v0.115.4",
+	"postAttachCommand": "/usr/bin/hugo server --bind 0.0.0.0 --buildDrafts",
+
+	"customizations": {
+		"vscode": {
+			"extensions": []
+		}
+	},
+
+	"forwardPorts": [
+		1313
+	]
+}
