@@ -22,6 +22,8 @@
 	{{ $additional := resources.Get "/css/additional.css" | resources.Fingerprint }}
 	<link rel="stylesheet" href="{{ $additional.RelPermalink | absURL }}" integrity="{{ $additional.Data.Integrity }}">
 
+	<link rel="stylesheet" href="/css/extra.css">
+
 	<!-- Custom css -->
 	{{ range .Site.Params.customCSS -}}
 	{{ $style := resources.Get . }}
