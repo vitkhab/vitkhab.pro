@@ -65,3 +65,6 @@ enableGitInfo = true
     identifier = "about"
     weight = 400
     url = "/"
+
+[markup.goldmark.renderer]
+  unsafe= true
