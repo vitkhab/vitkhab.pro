@@ -2,7 +2,7 @@ version: '3'
 
 services:
   hugo:
-    image: peaceiris/hugo:v0.118.2
+    image: peaceiris/hugo:v0.144.2
     command: server --bind 0.0.0.0 --buildDrafts
     volumes:
       - ./:/src
