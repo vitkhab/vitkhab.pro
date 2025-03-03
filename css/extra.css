@@ -3,3 +3,11 @@ img[src$='#img-center'] {
     margin-left: auto;
     margin-right: auto;
 }
+
+.maxthumb {
+    max-height: 348px;
+}
+
+details {
+    margin: 0 0 1.5rem 0;
+}

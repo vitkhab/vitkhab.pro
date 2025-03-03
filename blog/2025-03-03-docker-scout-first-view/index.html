@@ -1,0 +1,973 @@
+<!doctype html><html lang=ru-ru><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.144.2"><title>Первый взгляд на Docker Scout | Vitaly Khabarov</title>
+<meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://vitkhab.pro/blog/2025-03-03-docker-scout-first-view/cover.svg"><meta name=twitter:title content="Первый взгляд на Docker Scout"><meta name=twitter:description content="Первые впечатления от нового сканера безопасности встроенного в экосистему Docker"><meta name=twitter:site content="@vitkhab"><meta property="og:url" content="https://vitkhab.pro/blog/2025-03-03-docker-scout-first-view/"><meta property="og:site_name" content="Vitaly Khabarov"><meta property="og:title" content="Первый взгляд на Docker Scout"><meta property="og:description" content="Первые впечатления от нового сканера безопасности встроенного в экосистему Docker"><meta property="og:locale" content="ru_ru"><meta property="og:type" content="article"><meta property="article:section" content="blog"><meta property="article:published_time" content="2025-03-03T00:00:00+00:00"><meta property="article:modified_time" content="2025-03-03T22:02:22+04:00"><meta property="article:tag" content="Docker"><meta property="og:image" content="https://vitkhab.pro/blog/2025-03-03-docker-scout-first-view/cover.svg"><link href=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css rel=stylesheet integrity=sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T crossorigin=anonymous><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.0.13/css/all.css integrity=sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp crossorigin=anonymous><link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel=stylesheet><link rel=stylesheet href=https://vitkhab.pro/css/medium.a3d5489836b19de22a81ddc6bd21c17547d07529e67b266427378a04fa3ea727.css integrity="sha256-o9VImDaxneIqgd3GvSHBdUfQdSnmeyZkJzeKBPo+pyc="><link rel=stylesheet href=https://vitkhab.pro/css/additional.8819b6defcdc6d21280f9b402b00df87ca779135901de6c22e708c62e20184b9.css integrity="sha256-iBm23vzcbSEoD5tAKwDfh8p3kTWQHebCLnCMYuIBhLk="><link rel=stylesheet href=/css/extra.css></head><body><nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down"><div class="container pr-0"><a class=navbar-brand href=https://vitkhab.pro//><span style=font-family:Righteous>Vitaly Khabarov</span>
+</a><button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarMediumish aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse" id=navbarMediumish><ul class="navbar-nav ml-auto"><li class=nav-item><a class=nav-link href=/blog>Статьи</a></li><li class=nav-item><a class=nav-link href=/presentations>Презентации</a></li><li class=nav-item><a class=nav-link href=/projects>Проекты</a></li><li class=nav-item><a class=nav-link href=/>Обо Мне</a></li></ul></div></div></nav><div class=site-content><div class=container><div class=mainheading><h1 class=sitetitle>Vitaly Khabarov</h1><p class=lead>прo технологии и разработку цифровых продуктов</p></div><div class=main-content><div class=container><div class=row><div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset"><p>Share</p><ul><li class="ml-1 mr-1"><a target=_blank href="https://twitter.com/intent/tweet?text=%d0%9f%d0%b5%d1%80%d0%b2%d1%8b%d0%b9%20%d0%b2%d0%b7%d0%b3%d0%bb%d1%8f%d0%b4%20%d0%bd%d0%b0%20Docker%20Scout&url=https%3a%2f%2fvitkhab.pro%2fblog%2f2025-03-03-docker-scout-first-view%2f" onclick='return window.open(this.href,"twitter-share","width=550,height=435"),!1'><i class="fab fa-twitter"></i></a></li><li class="ml-1 mr-1"><a target=_blank href="https://facebook.com/sharer.php?u=https%3a%2f%2fvitkhab.pro%2fblog%2f2025-03-03-docker-scout-first-view%2f" onclick='return window.open(this.href,"facebook-share","width=550,height=435"),!1'><i class="fab fa-facebook-f"></i></a></li><li class="ml-1 mr-1"><a target=_blank href="https://www.xing.com/spi/shares/new?url=https%3a%2f%2fvitkhab.pro%2fblog%2f2025-03-03-docker-scout-first-view%2f" onclick='return window.open(this.href,"xing-share","width=550,height=435"),!1'><i class="fab fa-xing"></i></a></li></ul><div class=sep></div><ul><li><a class="small smoothscroll" href=#disqus_thread></a></li></ul></div></div><div class="col-md-9 flex-first flex-md-unordered"><div class=mainheading><div class="row post-top-meta"><div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right"><img class=author-thumb src=/images/vitkhab.webp alt="Виталик Хабаров"></div><div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left"><a target=_blank class=link-dark>Виталик Хабаров</a><br><span class=author-description>Энтузиаст разработки цифровых продуктов<br><i class="far fa-star"></i>
+Mar 3, 2025
+<i class="far fa-clock clock"></i>
+30 min read</span></div></div><h1 class=posttitle>Первый взгляд на Docker Scout</h1></div><div class=article-post><h1 id=tldr>TL;DR</h1><ul><li>Классно, что появился встроенный в экосистему сканер уязвимисотей.</li><li>Если ничего не использовали, то можно начать с Docker Scout.</li><li>Если использовали Trivy, то не вижу причин переходить на Docker Scout.</li><li>Чем более облегченный образ используете, тем безопаснее. Идеально использовать distroless.</li></ul><h1 id=пролог>Пролог</h1><p>Собрал для себя образ. И <code>docker build</code> предложил проверить его на уязвимостью новой утилитой <a href=https://www.docker.com/products/docker-scout/>Docker Scout</a>. А он как возьми, да найди сомнительные пакеты. «Не порядок» — подумал я и начал оптимизировать совсем не нуждающийся в этом образ.</p><h1 id=знакомство-с-инструментом>Знакомство с инструментом</h1><p>Я начал приключение с <code>Dockerfile</code> следующего содержания:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> node:22</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ARG</span> SERVELESS_VERSION<span style=color:#f92672>=</span><span style=color:#ae81ff>3</span>.40.0<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ARG</span> YC_PLUGIN_VERSION<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>.7.25<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># Install Serverless Framework globally and Yandex.Cloud plugin</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm install -g <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    serverless@<span style=color:#e6db74>${</span>SERVELESS_VERSION<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    <span style=color:#e6db74>&#34;@yandex-cloud/serverless-plugin@</span><span style=color:#e6db74>${</span>YC_PLUGIN_VERSION<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /app</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>CMD</span> [ <span style=color:#e6db74>&#34;serverless&#34;</span> ]<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><p><strong>Docker</strong> порекомендовал собрать образ через команду <code>docker buildx build --provenance=true --sbom=true</code>. Но тут же свалился с ошибкой <code>trying to send message larger than max</code>.</p><details><summary>Лог ошибки</summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span> <span style=color:#f92672>=</span>&gt; <span style=color:#f92672>[</span>linux/arm64<span style=color:#f92672>]</span> generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1           12.1s
+</span></span><span style=display:flex><span> <span style=color:#f92672>=</span>&gt; ERROR exporting to image                                                                      19.9s
+</span></span><span style=display:flex><span> <span style=color:#f92672>=</span>&gt; <span style=color:#f92672>=</span>&gt; exporting layers                                                                           11.6s
+</span></span><span style=display:flex><span> <span style=color:#f92672>=</span>&gt; <span style=color:#f92672>=</span>&gt; exporting manifest sha256:ddbffdb1f2f1dde3219cdd7e13de9c45f7968183a04d54065a55b8381f09ddd0  0.0s
+</span></span><span style=display:flex><span> <span style=color:#f92672>=</span>&gt; <span style=color:#f92672>=</span>&gt; exporting config sha256:38eb1a60e1878cc720ec29ef2b55198479e2f2dc12a53206be13421b808c6ebb    0.0s
+</span></span><span style=display:flex><span>------
+</span></span><span style=display:flex><span> &gt; exporting to image:
+</span></span><span style=display:flex><span>------
+</span></span><span style=display:flex><span>ERROR: failed to solve: error writing data blob sha256:552c9fa6885ff2969db4a747c1194b74037d392aa234c708
+</span></span><span style=display:flex><span>f5b44ec4a5445229: failed to copy: failed to send write: trying to send message larger than max
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span><span style=color:#ae81ff>16955122</span> vs. 16777216<span style=color:#f92672>)</span>: unknown
+</span></span></code></pre></div></details><p>Разберем команду по кусочкам:</p><ul><li><code>buildx</code> — позволяет использовать расширенные функции BuildKit. Подробнее про <a href=https://docs.docker.com/reference/cli/docker/buildx/>доступные команды и атрибуты</a>.</li><li><code>--provenance=true</code> — дает больше информации о том, как был собран образ. Записывает информацию о шагах сборки, параметры и переменные окружения, timestamp&rsquo;ы и так далее. Подробнее про <a href=https://docs.docker.com/reference/cli/docker/buildx/build/#provenance>доступные значения флага</a> и о <a href=https://docs.docker.com/build/metadata/attestations/slsa-provenance/>проверке</a>.</li><li><code>--sbom=true</code> — собирает информацию об используемых пакетах и библиотеках во время сборки. Но может вызвать ошибку на больших образах, поэтому я ею воспользуюсь позже. Подробнее про <a href=https://docs.docker.com/reference/cli/docker/buildx/build/#sbom>доступные значения флага</a> и о <a href=https://docs.docker.com/build/metadata/attestations/sbom/>проверке</a>.</li></ul><p>Собираю образ. <code>quickview</code> рекомендует изменить образ на той же версии с тегом <code>-slim</code> и показывыает как сразу уменьшится количество угроз на порядок.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker buildx build --provenance<span style=color:#f92672>=</span>true --no-cache -t vitkhab/serverless:3.40.0-22 .
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>❯ docker scout quickview local://vitkhab/serverless:3.40.0-22
+</span></span><span style=display:flex><span>    ✓ Image stored <span style=color:#66d9ef>for</span> indexing
+</span></span><span style=display:flex><span>    ✓ Indexed <span style=color:#ae81ff>1372</span> packages
+</span></span><span style=display:flex><span>    ✓ Provenance obtained from attestation
+</span></span><span style=display:flex><span>    ✓ Pulled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target             │  local://vitkhab/serverless:3.40.0-22  │    0C     3H     8M   129L     4?   
+</span></span><span style=display:flex><span>    digest           │  271280766dd4                          │                                     
+</span></span><span style=display:flex><span>  Base image         │  node:22                               │    0C     3H     7M   129L     4?   
+</span></span><span style=display:flex><span>  Updated base image │  node:22-slim                          │    0C     0H     2M    23L          
+</span></span><span style=display:flex><span>                     │                                        │           -3     -5   -106     -4   
+</span></span></code></pre></div><p>Команда <code>recommendations</code> дополнительно оценивает свежесть базового образа и в качестве рекомендаций предлагает альтернативу в виде образа с тегом <code>23-slim</code>, с более новой версией Node.js. Также проводит оценку по размеру образа и количеству установленных пакетов.</p><details><summary>Подробные рекомендации от <code>recommendations</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker scout recommendations local://vitkhab/serverless:3.40.0-22
+</span></span><span style=display:flex><span>    ✓ Image stored <span style=color:#66d9ef>for</span> indexing
+</span></span><span style=display:flex><span>    ✓ Indexed <span style=color:#ae81ff>1372</span> packages
+</span></span><span style=display:flex><span>    ✓ Provenance obtained from attestation
+</span></span><span style=display:flex><span>    ✓ Pulled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target   │  local://vitkhab/serverless:3.40.0-22
+</span></span><span style=display:flex><span>    digest │  271280766dd4                        
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Recommended fixes</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Base image is  node:22 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Name            │  <span style=color:#ae81ff>22</span>                                                                        
+</span></span><span style=display:flex><span>  Digest          │  sha256:6f448489c19fb63b81d788d95a470293026b034d8d657c2f9e5a9d6955a8deec   
+</span></span><span style=display:flex><span>  Vulnerabilities │    0C     3H     7M   129L     4?                                          
+</span></span><span style=display:flex><span>  Pushed          │ <span style=color:#ae81ff>1</span> week ago                                                                 
+</span></span><span style=display:flex><span>  Size            │ <span style=color:#ae81ff>396</span> MB                                                                     
+</span></span><span style=display:flex><span>  Packages        │ <span style=color:#ae81ff>749</span>                                                                        
+</span></span><span style=display:flex><span>  Runtime         │ 22.14.0                                                                    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Refresh base image
+</span></span><span style=display:flex><span>  Rebuild the image using a newer base image version. Updating this may result in breaking changes.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  ✓ This image version is up to date.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Change base image
+</span></span><span style=display:flex><span>  The list displays new recommended tags in descending order, where the top results are rated as most suitable.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>              Tag              │                         Details                         │   Pushed   │          Vulnerabilities            
+</span></span><span style=display:flex><span>───────────────────────────────┼─────────────────────────────────────────────────────────┼────────────┼─────────────────────────────────────
+</span></span><span style=display:flex><span>   22-slim                     │ Benefits:                                               │ <span style=color:#ae81ff>1</span> week ago │    0C     0H     2M    23L          
+</span></span><span style=display:flex><span>  Minor runtime version update │ • Minor runtime version update                          │            │           -3     -5   -106     -4   
+</span></span><span style=display:flex><span>  Also known as:               │ • Image is smaller by <span style=color:#ae81ff>303</span> MB                            │            │                                     
+</span></span><span style=display:flex><span>  • 22.14.0-slim               │ • Image contains <span style=color:#ae81ff>423</span> fewer packages                     │            │                                     
+</span></span><span style=display:flex><span>  • 22.14-slim                 │ • Image introduces no new vulnerability but removes <span style=color:#ae81ff>114</span> │            │                                     
+</span></span><span style=display:flex><span>  • lts-slim                   │ • Tag is using slim variant                             │            │                                     
+</span></span><span style=display:flex><span>  • jod-slim                   │                                                         │            │                                     
+</span></span><span style=display:flex><span>  • 22-bookworm-slim           │ Image details:                                          │            │                                     
+</span></span><span style=display:flex><span>  • jod-bookworm-slim          │ • Size: <span style=color:#ae81ff>78</span> MB                                           │            │                                     
+</span></span><span style=display:flex><span>  • lts-bookworm-slim          │ • Runtime: 22.14.0                                      │            │                                     
+</span></span><span style=display:flex><span>  • 22.14-bookworm-slim        │                                                         │            │                                     
+</span></span><span style=display:flex><span>  • 22.14.0-bookworm-slim      │                                                         │            │                                     
+</span></span><span style=display:flex><span>                               │                                                         │            │                                     
+</span></span><span style=display:flex><span>                               │                                                         │            │                                     
+</span></span><span style=display:flex><span>   23-slim                     │ Benefits:                                               │ <span style=color:#ae81ff>1</span> week ago │    0C     0H     2M    23L          
+</span></span><span style=display:flex><span>  Tag is preferred tag         │ • Image is smaller by <span style=color:#ae81ff>302</span> MB                            │            │           -3     -5   -106     -4   
+</span></span><span style=display:flex><span>  Also known as:               │ • Image contains <span style=color:#ae81ff>423</span> fewer packages                     │            │                                     
+</span></span><span style=display:flex><span>  • 23.8.0-slim                │ • Tag is preferred tag                                  │            │                                     
+</span></span><span style=display:flex><span>  • 23.8-slim                  │ • Tag was pushed more recently                          │            │                                     
+</span></span><span style=display:flex><span>  • current-slim               │ • Image introduces no new vulnerability but removes <span style=color:#ae81ff>114</span> │            │                                     
+</span></span><span style=display:flex><span>  • slim                       │ • Tag is using slim variant                             │            │                                     
+</span></span><span style=display:flex><span>  • bookworm-slim              │                                                         │            │                                     
+</span></span><span style=display:flex><span>  • 23-bookworm-slim           │ Image details:                                          │            │                                     
+</span></span><span style=display:flex><span>  • 23.8-bookworm-slim         │ • Size: <span style=color:#ae81ff>80</span> MB                                           │            │                                     
+</span></span><span style=display:flex><span>  • 23.8.0-bookworm-slim       │ • Runtime: <span style=color:#ae81ff>22</span>                                           │            │                                     
+</span></span><span style=display:flex><span>  • current-bookworm-slim      │                                                         │            │                                     
+</span></span><span style=display:flex><span>                               │                                                         │            │                                     
+</span></span><span style=display:flex><span>                               │                                                         │            │                                     
+</span></span></code></pre></div></details><p>Меняю базовый образ на <code>node:22-slim</code>, собираю и снова проверяю с помощью Docker Scout. Теперь остается только одна рекомендация - обновление базового образа на <code>node:23-slim</code>.</p><details><summary>Результаты сканирования образа на основе <code>22-slim</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker buildx build --sbom<span style=color:#f92672>=</span>true --provenance<span style=color:#f92672>=</span>true --no-cache -t vitkhab/serverless:3.40.0-22-slim .
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>❯ docker scout quickview local://vitkhab/serverless:3.40.0-22-slim
+</span></span><span style=display:flex><span>    ✓ Image stored <span style=color:#66d9ef>for</span> indexing
+</span></span><span style=display:flex><span>    ✓ SBOM obtained from attestation, <span style=color:#ae81ff>912</span> packages found
+</span></span><span style=display:flex><span>    ✓ Provenance obtained from attestation
+</span></span><span style=display:flex><span>    ✓ Pulled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target             │  local://vitkhab/serverless:3.40.0-22-slim  │    0C     0H     3M    23L   
+</span></span><span style=display:flex><span>    digest           │  6973d8cc1f2d                               │                              
+</span></span><span style=display:flex><span>  Base image         │  node:22-slim                               │    0C     0H     2M    23L   
+</span></span><span style=display:flex><span>  Updated base image │  node:23-slim                               │    0C     0H     2M    23L   
+</span></span><span style=display:flex><span>                     │                                             │                              
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>❯ docker scout recommendations local://vitkhab/serverless:3.40.0-22-slim
+</span></span><span style=display:flex><span>    ✓ SBOM of image already cached, <span style=color:#ae81ff>912</span> packages indexed
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target   │  local://vitkhab/serverless:3.40.0-22-slim
+</span></span><span style=display:flex><span>    digest │  6973d8cc1f2d                        
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Recommended fixes</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Base image is  node:22-slim 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Name            │  22-slim                                                                   
+</span></span><span style=display:flex><span>  Digest          │  sha256:0576f7912bf105a725a9f03fe84f0db764e15144c15a729752a3c3cbf7da5408   
+</span></span><span style=display:flex><span>  Vulnerabilities │    0C     0H     2M    23L                                                 
+</span></span><span style=display:flex><span>  Pushed          │ <span style=color:#ae81ff>1</span> week ago                                                                 
+</span></span><span style=display:flex><span>  Size            │ <span style=color:#ae81ff>78</span> MB                                                                      
+</span></span><span style=display:flex><span>  Packages        │ <span style=color:#ae81ff>326</span>                                                                        
+</span></span><span style=display:flex><span>  Runtime         │ 22.14.0                                                                    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Refresh base image
+</span></span><span style=display:flex><span>  Rebuild the image using a newer base image version. Updating this may result in breaking changes.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  ✓ This image version is up to date.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Change base image
+</span></span><span style=display:flex><span>  The list displays new recommended tags in descending order, where the top results are rated as most suitable.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            Tag           │                  Details                   │   Pushed   │       Vulnerabilities        
+</span></span><span style=display:flex><span>──────────────────────────┼────────────────────────────────────────────┼────────────┼──────────────────────────────
+</span></span><span style=display:flex><span>   23-slim                │ Benefits:                                  │ <span style=color:#ae81ff>1</span> week ago │    0C     0H     2M    23L   
+</span></span><span style=display:flex><span>  Tag is preferred tag    │ • Same OS detected                         │            │                              
+</span></span><span style=display:flex><span>  Also known as:          │ • Tag is preferred tag                     │            │                              
+</span></span><span style=display:flex><span>  • 23.8.0-slim           │ • Tag was pushed more recently             │            │                              
+</span></span><span style=display:flex><span>  • 23.8-slim             │ • Image has similar size                   │            │                              
+</span></span><span style=display:flex><span>  • current-slim          │ • Image has same number of vulnerabilities │            │                              
+</span></span><span style=display:flex><span>  • slim                  │ • Image contains equal number of packages  │            │                              
+</span></span><span style=display:flex><span>  • bookworm-slim         │ • Tag is using slim variant                │            │                              
+</span></span><span style=display:flex><span>  • 23-bookworm-slim      │                                            │            │                              
+</span></span><span style=display:flex><span>  • 23.8-bookworm-slim    │ Image details:                             │            │                              
+</span></span><span style=display:flex><span>  • 23.8.0-bookworm-slim  │ • Size: <span style=color:#ae81ff>80</span> MB                              │            │                              
+</span></span><span style=display:flex><span>  • current-bookworm-slim │ • Runtime: <span style=color:#ae81ff>22</span>                              │            │                              
+</span></span><span style=display:flex><span>                          │                                            │            │                              
+</span></span><span style=display:flex><span>                          │                                            │            │                              
+</span></span><span style=display:flex><span>                          │                                            │            │                              
+</span></span></code></pre></div></details><p>Продолжаю вестись на уговоры Docker Scout, обновляю базовый образ на <code>node:23-slim</code> и пересобираю. Теперь мне рекомендуют вернуться обратно на <code>node:22-slim</code> <nobr>¯\_(ツ)_/¯</nobr> .</p><details><summary>Результаты сканирования образа на основе <code>23-slim</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker scout quickview local://vitkhab/serverless:3.40.0-23-slim
+</span></span><span style=display:flex><span>    ✓ Image stored <span style=color:#66d9ef>for</span> indexing
+</span></span><span style=display:flex><span>    ✓ SBOM obtained from attestation, <span style=color:#ae81ff>912</span> packages found
+</span></span><span style=display:flex><span>    ✓ Provenance obtained from attestation
+</span></span><span style=display:flex><span>    ✓ Pulled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target             │  local://vitkhab/serverless:3.40.0-23-slim  │    0C     0H     3M    23L   
+</span></span><span style=display:flex><span>    digest           │  7c0c3361b083                               │                              
+</span></span><span style=display:flex><span>  Base image         │  node:23-slim                               │    0C     0H     2M    23L   
+</span></span><span style=display:flex><span>  Updated base image │  node:22-slim                               │    0C     0H     2M    23L   
+</span></span><span style=display:flex><span>                     │                                             │                              
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>❯ docker scout recommendations local://vitkhab/serverless:3.40.0-23-slim                    
+</span></span><span style=display:flex><span>    ✓ SBOM of image already cached, <span style=color:#ae81ff>912</span> packages indexed
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target   │  local://vitkhab/serverless:3.40.0-23-slim
+</span></span><span style=display:flex><span>    digest │  7c0c3361b083                        
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Recommended fixes</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Base image is  node:23-slim 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Name            │  23-slim                                                                   
+</span></span><span style=display:flex><span>  Digest          │  sha256:2dbdc1134da545b2a24e30678676c892fa8a600e8edb6e25afac50852baf213b   
+</span></span><span style=display:flex><span>  Vulnerabilities │    0C     0H     2M    23L                                                 
+</span></span><span style=display:flex><span>  Pushed          │ <span style=color:#ae81ff>1</span> week ago                                                                 
+</span></span><span style=display:flex><span>  Size            │ <span style=color:#ae81ff>80</span> MB                                                                      
+</span></span><span style=display:flex><span>  Packages        │ <span style=color:#ae81ff>326</span>                                                                        
+</span></span><span style=display:flex><span>  Runtime         │ <span style=color:#ae81ff>22</span>                                                                         
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Refresh base image
+</span></span><span style=display:flex><span>  Rebuild the image using a newer base image version. Updating this may result in breaking changes.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  ✓ This image version is up to date.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Change base image
+</span></span><span style=display:flex><span>  The list displays new recommended tags in descending order, where the top results are rated as most suitable.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    Tag                    │                  Details                   │   Pushed   │       Vulnerabilities        
+</span></span><span style=display:flex><span>───────────────────────────────────────────┼────────────────────────────────────────────┼────────────┼──────────────────────────────
+</span></span><span style=display:flex><span>   22-slim                                 │ Benefits:                                  │ <span style=color:#ae81ff>1</span> week ago │    0C     0H     2M    23L   
+</span></span><span style=display:flex><span>  Image has same number of vulnerabilities │ • Same OS detected                         │            │                              
+</span></span><span style=display:flex><span>  Also known as:                           │ • Image is smaller by 1.7 MB               │            │                              
+</span></span><span style=display:flex><span>  • 22.14.0-slim                           │ • Image has same number of vulnerabilities │            │                              
+</span></span><span style=display:flex><span>  • 22.14-slim                             │ • Image contains equal number of packages  │            │                              
+</span></span><span style=display:flex><span>  • lts-slim                               │ • Tag is using slim variant                │            │                              
+</span></span><span style=display:flex><span>  • jod-slim                               │                                            │            │                              
+</span></span><span style=display:flex><span>  • 22-bookworm-slim                       │ Image details:                             │            │                              
+</span></span><span style=display:flex><span>  • jod-bookworm-slim                      │ • Size: <span style=color:#ae81ff>78</span> MB                              │            │                              
+</span></span><span style=display:flex><span>  • lts-bookworm-slim                      │ • Runtime: 22.14.0                         │            │                              
+</span></span><span style=display:flex><span>  • 22.14-bookworm-slim                    │                                            │            │                              
+</span></span><span style=display:flex><span>  • 22.14.0-bookworm-slim                  │                                            │            │                              
+</span></span><span style=display:flex><span>                                           │                                            │            │                              
+</span></span><span style=display:flex><span>                                           │                                            │            │                              
+</span></span></code></pre></div></details><h1 id=сравнение-с-trivy>Сравнение с Trivy</h1><p>Остановимся. Выдохнем. Подведем подитог. Я обновил базовый образ с <code>node:22</code> на <code>node:23-slim</code>, уменьшив его на 302 МБ и избавившись от 114 угроз. Docker Scout на текущем эапе находит 3 Medium и 23 Low угрозы. Сканируя тот же образ с помощью Trivy можно обнаружить 1 Critical, 1 High, 19 Medium и 57 Low угроз. Trivy находит значительно больше угроз.</p><details><summary>Обнаруженные Docker Scout угрозы в образе на основе <code>23-slim</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker scout cves local://vitkhab/serverless:3.40.0-23-slim
+</span></span><span style=display:flex><span>    ✓ SBOM of image already cached, <span style=color:#ae81ff>912</span> packages indexed
+</span></span><span style=display:flex><span>    ✗ Detected <span style=color:#ae81ff>14</span> vulnerable packages with a total of <span style=color:#ae81ff>26</span> vulnerabilities
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Overview</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    │           Analyzed Image             
+</span></span><span style=display:flex><span>────────────────────┼──────────────────────────────────────
+</span></span><span style=display:flex><span>  Target            │  local://vitkhab/serverless:3.40.0-23-slim 
+</span></span><span style=display:flex><span>    digest          │  c38eb2f9940a                        
+</span></span><span style=display:flex><span>    platform        │ linux/arm64/v8                       
+</span></span><span style=display:flex><span>    vulnerabilities │    0C     0H     3M    23L           
+</span></span><span style=display:flex><span>    size            │ <span style=color:#ae81ff>186</span> MB                               
+</span></span><span style=display:flex><span>    packages        │ <span style=color:#ae81ff>912</span>                                  
+</span></span><span style=display:flex><span>                    │                                      
+</span></span><span style=display:flex><span>  Base image        │  node:23-slim                        
+</span></span><span style=display:flex><span>                    │  2dbdc1134da5                        
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Packages and Vulnerabilities</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     1M     1L  libgnutls30 3.7.9-2+deb12u3
+</span></span><span style=display:flex><span>pkg:deb/debian/libgnutls30@3.7.9-2%2Bdeb12u3?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>gnutls28
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ MEDIUM CVE-2024-12243
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2024-12243
+</span></span><span style=display:flex><span>      Affected range : &lt;3.7.9-2+deb12u4  
+</span></span><span style=display:flex><span>      Fixed version  : 3.7.9-2+deb12u4   
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2011-3389
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2011-3389
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>3.7.9-2+deb12u3  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed          
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     1M     0L  axios 0.28.1
+</span></span><span style=display:flex><span>pkg:npm/axios@0.28.1
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>14:14<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>RUN npm install -g serverless@<span style=color:#e6db74>${</span>SERVELESS_VERSION<span style=color:#e6db74>}</span> <span style=color:#e6db74>&#34;@yandex-cloud/serverless-plugin@</span><span style=color:#e6db74>${</span>YC_PLUGIN_VERSION<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ MEDIUM CVE-2023-45857 <span style=color:#f92672>[</span>OWASP Top Ten <span style=color:#ae81ff>2017</span> Category A9 - Using Components with Known Vulnerabilities<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2023-45857
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>0.8.1                                       
+</span></span><span style=display:flex><span>                     : &lt;1.6.0                                        
+</span></span><span style=display:flex><span>      Fixed version  : 1.6.0                                         
+</span></span><span style=display:flex><span>      CVSS Score     : 6.5                                           
+</span></span><span style=display:flex><span>      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N  
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     1M     0L  libtasn1-6 4.19.0-2
+</span></span><span style=display:flex><span>pkg:deb/debian/libtasn1-6@4.19.0-2?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ MEDIUM CVE-2024-12133
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2024-12133
+</span></span><span style=display:flex><span>      Affected range : &lt;4.19.0-2+deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : 4.19.0-2+deb12u1   
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     7L  libc6 2.36-9+deb12u9
+</span></span><span style=display:flex><span>pkg:deb/debian/libc6@2.36-9%2Bdeb12u9?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>glibc
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2019-9192
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2019-9192
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.36-9+deb12u9  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2019-1010025
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2019-1010025
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.36-9+deb12u9  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2019-1010024
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2019-1010024
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.36-9+deb12u9  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2019-1010023
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2019-1010023
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.36-9+deb12u9  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2019-1010022
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2019-1010022
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.36-9+deb12u9  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2018-20796
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2018-20796
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.36-9+deb12u9  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2010-4756
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2010-4756
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.36-9+deb12u9  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     4L  libudev1 252.33-1~deb12u1
+</span></span><span style=display:flex><span>pkg:deb/debian/libudev1@252.33-1~deb12u1?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>systemd
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2023-31439
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2023-31439
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>252.33-1~deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed           
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2023-31438
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2023-31438
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>252.33-1~deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed           
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2023-31437
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2023-31437
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>252.33-1~deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed           
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2013-4392
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2013-4392
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>252.33-1~deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed           
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     2L  libstdc++6 12.2.0-14
+</span></span><span style=display:flex><span>pkg:deb/debian/libstdc%2B%2B6@12.2.0-14?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>gcc-12
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2023-4039
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2023-4039
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>12.2.0-14  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2022-27943
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2022-27943
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>12.2.0-14  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     2L  perl-base 5.36.0-7+deb12u1
+</span></span><span style=display:flex><span>pkg:deb/debian/perl-base@5.36.0-7%2Bdeb12u1?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>perl
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2023-31486
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2023-31486
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>5.36.0-7+deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed           
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2011-4116
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2011-4116
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>5.36.0-7+deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed           
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     1L  coreutils 9.1-1
+</span></span><span style=display:flex><span>pkg:deb/debian/coreutils@9.1-1?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2017-18018
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2017-18018
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>9.1-1    
+</span></span><span style=display:flex><span>      Fixed version  : not fixed  
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     1L  tar 1.34+dfsg-1.2+deb12u1
+</span></span><span style=display:flex><span>pkg:deb/debian/tar@1.34%2Bdfsg-1.2%2Bdeb12u1?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2005-2541
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2005-2541
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>1.34+dfsg-1.2+deb12u1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed                
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     1L  libgcrypt20 1.10.1-3
+</span></span><span style=display:flex><span>pkg:deb/debian/libgcrypt20@1.10.1-3?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2018-6829
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2018-6829
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>1.10.1-3  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed   
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     1L  libapt-pkg6.0 2.6.1
+</span></span><span style=display:flex><span>pkg:deb/debian/libapt-pkg6.0@2.6.1?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>apt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2011-3374
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2011-3374
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.6.1    
+</span></span><span style=display:flex><span>      Fixed version  : not fixed  
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     1L  passwd 1:4.13+dfsg1-1+b1
+</span></span><span style=display:flex><span>pkg:deb/debian/passwd@1:4.13%2Bdfsg1-1%2Bb1?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>shadow%401:4.13%2Bdfsg1-1
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2007-5686
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2007-5686
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>1:4.13+dfsg1-1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed         
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     1L  util-linux-extra 2.38.1-5+deb12u3
+</span></span><span style=display:flex><span>pkg:deb/debian/util-linux-extra@2.38.1-5%2Bdeb12u3?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>util-linux
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2022-0563
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2022-0563
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.38.1-5+deb12u3  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed           
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     0M     1L  gpgv 2.2.40-1.1
+</span></span><span style=display:flex><span>pkg:deb/debian/gpgv@2.2.40-1.1?arch<span style=color:#f92672>=</span>arm64&amp;distro<span style=color:#f92672>=</span>debian-12&amp;upstream<span style=color:#f92672>=</span>gnupg2
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>1:1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>FROM node:23-slim
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ LOW CVE-2022-3219
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2022-3219
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>2.2.40-1.1  
+</span></span><span style=display:flex><span>      Fixed version  : not fixed     
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>26</span> vulnerabilities found in <span style=color:#ae81ff>14</span> packages
+</span></span><span style=display:flex><span>  CRITICAL  <span style=color:#ae81ff>0</span>   
+</span></span><span style=display:flex><span>  HIGH      <span style=color:#ae81ff>0</span>   
+</span></span><span style=display:flex><span>  MEDIUM    <span style=color:#ae81ff>3</span>   
+</span></span><span style=display:flex><span>  LOW       <span style=color:#ae81ff>23</span> 
+</span></span></code></pre></div></details><details><summary>Лог сканирования Trivy образа на основе <code>23-slim</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image vitkhab/serverless:3.40.0-23-slim
+</span></span><span style=display:flex><span>2025-02-23T20:06:01Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Need to update DB
+</span></span><span style=display:flex><span>2025-02-23T20:06:01Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Downloading vulnerability DB...
+</span></span><span style=display:flex><span>2025-02-23T20:06:01Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Downloading artifact...      repo<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;mirror.gcr.io/aquasec/trivy-db:2&#34;</span>
+</span></span><span style=display:flex><span>59.40 MiB / 59.40 MiB <span style=color:#f92672>[</span>-------------<span style=color:#f92672>]</span> 100.00% 5.25 MiB p/s 12s
+</span></span><span style=display:flex><span>2025-02-23T20:06:14Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Artifact successfully downloaded     repo<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;mirror.gcr.io/aquasec/trivy-db:2&#34;</span>
+</span></span><span style=display:flex><span>2025-02-23T20:06:14Z    INFO    <span style=color:#f92672>[</span>vuln<span style=color:#f92672>]</span> Vulnerability scanning is enabled
+</span></span><span style=display:flex><span>2025-02-23T20:06:14Z    INFO    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> Secret scanning is enabled
+</span></span><span style=display:flex><span>2025-02-23T20:06:14Z    INFO    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> If your scanning is slow, please try <span style=color:#e6db74>&#39;--scanners vuln&#39;</span> to disable secret scanning
+</span></span><span style=display:flex><span>2025-02-23T20:06:14Z    INFO    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> Please see also https://aquasecurity.github.io/trivy/v0.59/docs/scanner/secret#recommendation <span style=color:#66d9ef>for</span> faster secret detection
+</span></span><span style=display:flex><span>2025-02-23T20:06:30Z    WARN    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> The size of the scanned file is too large. It is recommended to use <span style=color:#e6db74>`</span>--skip-files<span style=color:#e6db74>`</span> <span style=color:#66d9ef>for</span> this file to avoid high memory consumption. file_path<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;root/.npm/_cacache/content-v2/sha512/fb/d4/a23a8bfe2fc03c37fc207d930a2743aafb8c6ebecc3b29b6aa40020751f95d3f6491cc32fb6e30e9ff503cc8aba0be9f43200465ceccd78a640fc56fa501&#34;</span> size <span style=color:#f92672>(</span>MB<span style=color:#f92672>)=</span><span style=color:#ae81ff>16</span>
+</span></span><span style=display:flex><span>2025-02-23T20:06:42Z    INFO    <span style=color:#f92672>[</span>python<span style=color:#f92672>]</span> Licenses acquired from one or more METADATA files may be subject to additional terms. Use <span style=color:#e6db74>`</span>--debug<span style=color:#e6db74>`</span> flag to see all affected packages.
+</span></span><span style=display:flex><span>2025-02-23T20:06:42Z    INFO    Detected OS     family<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;debian&#34;</span> version<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;12.9&#34;</span>
+</span></span><span style=display:flex><span>2025-02-23T20:06:42Z    INFO    <span style=color:#f92672>[</span>debian<span style=color:#f92672>]</span> Detecting vulnerabilities... os_version<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;12&#34;</span> pkg_num<span style=color:#f92672>=</span><span style=color:#ae81ff>88</span>
+</span></span><span style=display:flex><span>2025-02-23T20:06:42Z    INFO    Number of language-specific files     num<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>2025-02-23T20:06:42Z    INFO    <span style=color:#f92672>[</span>python-pkg<span style=color:#f92672>]</span> Detecting vulnerabilities...
+</span></span><span style=display:flex><span>2025-02-23T20:06:42Z    INFO    <span style=color:#f92672>[</span>node-pkg<span style=color:#f92672>]</span> Detecting vulnerabilities...
+</span></span><span style=display:flex><span>2025-02-23T20:06:42Z    WARN    Using severities from other vendors <span style=color:#66d9ef>for</span> some vulnerabilities. Read https://aquasecurity.github.io/trivy/v0.59/docs/scanner/vulnerability#severity-selection <span style=color:#66d9ef>for</span> details.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>vitkhab/serverless:3.40.0-23-slim <span style=color:#f92672>(</span>debian 12.9<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Total: <span style=color:#ae81ff>78</span> <span style=color:#f92672>(</span>UNKNOWN: 0, LOW: 57, MEDIUM: 19, HIGH: 1, CRITICAL: 1<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>┌────────────────────┬─────────────────────┬──────────┬──────────────┬───────────────────────┬──────────────────┬──────────────────────────────────────────────────────────────┐
+</span></span><span style=display:flex><span>│      Library       │    Vulnerability    │ Severity │    Status    │   Installed Version   │  Fixed Version   │                            Title                             │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┼──────────┼──────────────┼───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ apt                │ CVE-2011-3374       │ LOW      │ affected     │ 2.6.1                 │                  │ It was found that apt-key in apt, all versions, <span style=color:#66d9ef>do</span> not       │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ correctly...                                                 │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2011-3374                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ bash               │ TEMP-0841856-B18BAF │          │              │ 5.2.15-2+b7           │                  │ <span style=color:#f92672>[</span>Privilege escalation possible to other user than root<span style=color:#f92672>]</span>      │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://security-tracker.debian.org/tracker/TEMP-0841856-B1- │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ 8BAF                                                         │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ bsdutils           │ CVE-2022-0563       │          │              │ 1:2.38.1-5+deb12u3    │                  │ util-linux: partial disclosure of arbitrary files in chfn    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ and chsh when compiled...                                    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          ├──────────────┼───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ coreutils          │ CVE-2016-2781       │          │ will_not_fix │ 9.1-1                 │                  │ coreutils: Non-privileged session can escape to the parent   │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ session in chroot                                            │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2016-2781                    │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          ├──────────────┤                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2017-18018      │          │ affected     │                       │                  │ coreutils: race condition vulnerability in chown and chgrp   │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2017-18018                   │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ gcc-12-base        │ CVE-2022-27943      │          │              │ 12.2.0-14             │                  │ binutils: libiberty/rust-demangle.c in GNU GCC 11.2 allows   │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ stack exhaustion in demangle_const                           │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-27943                   │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2023-4039       │          │              │                       │                  │ gcc: -fstack-protector fails to guard dynamic stack          │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ allocations on ARM64                                         │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-4039                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ gpgv               │ CVE-2022-3219       │          │              │ 2.2.40-1.1            │                  │ gnupg: denial of service issue <span style=color:#f92672>(</span>resource consumption<span style=color:#f92672>)</span> using  │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ compressed packets                                           │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-3219                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ libapt-pkg6.0      │ CVE-2011-3374       │          │              │ 2.6.1                 │                  │ It was found that apt-key in apt, all versions, <span style=color:#66d9ef>do</span> not       │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ correctly...                                                 │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2011-3374                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ libblkid1          │ CVE-2022-0563       │          │              │ 2.38.1-5+deb12u3      │                  │ util-linux: partial disclosure of arbitrary files in chfn    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ and chsh when compiled...                                    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ libc-bin           │ CVE-2025-0395       │ MEDIUM   │              │ 2.36-9+deb12u9        │                  │ glibc: buffer overflow in the GNU C Library<span style=color:#e6db74>&#39;s assert()       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2025-0395                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┼──────────┤              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2010-4756       │ LOW      │              │                       │                  │ glibc: glob implementation can cause excessive CPU and       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ memory consumption due to...                                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2010-4756                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2018-20796      │          │              │                       │                  │ glibc: uncontrolled recursion in function                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ check_dst_limits_calc_pos_1 in posix/regexec.c               │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2018-20796                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2019-1010022    │          │              │                       │                  │ glibc: stack guard protection bypass                         │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010022                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2019-1010023    │          │              │                       │                  │ glibc: running ldd on malicious ELF leads to code execution  │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ because of...                                                │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010023                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2019-1010024    │          │              │                       │                  │ glibc: ASLR bypass using cache of thread stack and heap      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010024                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2019-1010025    │          │              │                       │                  │ glibc: information disclosure of heap addresses of           │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ pthread_created thread                                       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010025                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2019-9192       │          │              │                       │                  │ glibc: uncontrolled recursion in function                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ check_dst_limits_calc_pos_1 in posix/regexec.c               │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-9192                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┤              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libc6              │ CVE-2025-0395       │ MEDIUM   │              │                       │                  │ glibc: buffer overflow in the GNU C Library&#39;</span>s assert<span style=color:#f92672>()</span>       │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2025-0395                    │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┼──────────┤              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2010-4756       │ LOW      │              │                       │                  │ glibc: glob implementation can cause excessive CPU and       │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ memory consumption due to...                                 │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2010-4756                    │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2018-20796      │          │              │                       │                  │ glibc: uncontrolled recursion in <span style=color:#66d9ef>function</span>                    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ check_dst_limits_calc_pos_1 in posix/regexec.c               │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2018-20796                   │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2019-1010022    │          │              │                       │                  │ glibc: stack guard protection bypass                         │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010022                 │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2019-1010023    │          │              │                       │                  │ glibc: running ldd on malicious ELF leads to code execution  │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ because of...                                                │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010023                 │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2019-1010024    │          │              │                       │                  │ glibc: ASLR bypass using cache of thread stack and heap      │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010024                 │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2019-1010025    │          │              │                       │                  │ glibc: information disclosure of heap addresses of           │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ pthread_created thread                                       │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-1010025                 │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2019-9192       │          │              │                       │                  │ glibc: uncontrolled recursion in <span style=color:#66d9ef>function</span>                    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ check_dst_limits_calc_pos_1 in posix/regexec.c               │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2019-9192                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ libcap2            │ CVE-2025-1390       │ MEDIUM   │              │ 1:2.66-4              │                  │ libcap: pam_cap: Fix potential configuration parsing error   │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2025-1390                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ libgcc-s1          │ CVE-2022-27943      │ LOW      │              │ 12.2.0-14             │                  │ binutils: libiberty/rust-demangle.c in GNU GCC 11.2 allows   │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ stack exhaustion in demangle_const                           │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-27943                   │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2023-4039       │          │              │                       │                  │ gcc: -fstack-protector fails to guard dynamic stack          │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ allocations on ARM64                                         │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-4039                    │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┼──────────┼──────────────┼───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ libgcrypt20        │ CVE-2024-2236       │ MEDIUM   │ fix_deferred │ 1.10.1-3              │                  │ libgcrypt: vulnerable to Marvin Attack                       │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-2236                    │
+</span></span><span style=display:flex><span>│                    ├─────────────────────┼──────────┼──────────────┤                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│                    │ CVE-2018-6829       │ LOW      │ affected     │                       │                  │ libgcrypt: ElGamal implementation doesn<span style=color:#e6db74>&#39;t have semantic      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ security due to incorrectly encoded plaintexts...            │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2018-6829                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┼──────────────┼───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libgnutls30        │ CVE-2024-12243      │ MEDIUM   │ fixed        │ 3.7.9-2+deb12u3       │ 3.7.9-2+deb12u4  │ gnutls: GnuTLS Impacted by Inefficient DER Decoding in       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ libtasn1 Leading to Remote...                                │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-12243                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┼──────────┼──────────────┤                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2011-3389       │ LOW      │ affected     │                       │                  │ HTTPS: block-wise chosen-plaintext attack against SSL/TLS    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ (BEAST)                                                      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2011-3389                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libmount1          │ CVE-2022-0563       │          │              │ 2.38.1-5+deb12u3      │                  │ util-linux: partial disclosure of arbitrary files in chfn    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ and chsh when compiled...                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libpam-modules     │ CVE-2024-10041      │ MEDIUM   │              │ 1.5.2-6+deb12u1       │                  │ pam: libpam: Libpam vulnerable to read hashed password       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-10041                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2024-22365      │          │              │                       │                  │ pam: allowing unprivileged user to block another user        │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ namespace                                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-22365                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libpam-modules-bin │ CVE-2024-10041      │          │              │                       │                  │ pam: libpam: Libpam vulnerable to read hashed password       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-10041                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2024-22365      │          │              │                       │                  │ pam: allowing unprivileged user to block another user        │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ namespace                                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-22365                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libpam-runtime     │ CVE-2024-10041      │          │              │                       │                  │ pam: libpam: Libpam vulnerable to read hashed password       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-10041                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2024-22365      │          │              │                       │                  │ pam: allowing unprivileged user to block another user        │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ namespace                                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-22365                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libpam0g           │ CVE-2024-10041      │          │              │                       │                  │ pam: libpam: Libpam vulnerable to read hashed password       │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-10041                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2024-22365      │          │              │                       │                  │ pam: allowing unprivileged user to block another user        │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ namespace                                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-22365                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libsmartcols1      │ CVE-2022-0563       │ LOW      │              │ 2.38.1-5+deb12u3      │                  │ util-linux: partial disclosure of arbitrary files in chfn    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ and chsh when compiled...                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libstdc++6         │ CVE-2022-27943      │          │              │ 12.2.0-14             │                  │ binutils: libiberty/rust-demangle.c in GNU GCC 11.2 allows   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ stack exhaustion in demangle_const                           │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-27943                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-4039       │          │              │                       │                  │ gcc: -fstack-protector fails to guard dynamic stack          │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ allocations on ARM64                                         │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-4039                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libsystemd0        │ CVE-2013-4392       │          │              │ 252.33-1~deb12u1      │                  │ systemd: TOCTOU race condition when updating file            │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ permissions and SELinux security contexts...                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2013-4392                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-31437      │          │              │                       │                  │ An issue was discovered in systemd 253. An attacker can      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ modify a...                                                  │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31437                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-31438      │          │              │                       │                  │ An issue was discovered in systemd 253. An attacker can      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ truncate a...                                                │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31438                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-31439      │          │              │                       │                  │ An issue was discovered in systemd 253. An attacker can      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ modify the...                                                │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31439                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┼──────────────┼───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libtasn1-6         │ CVE-2024-12133      │ MEDIUM   │ fixed        │ 4.19.0-2              │ 4.19.0-2+deb12u1 │ libtasn1: Inefficient DER Decoding in libtasn1 Leading to    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ Potential Remote DoS                                         │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-12133                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          ├──────────────┼───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libtinfo6          │ CVE-2023-50495      │          │ affected     │ 6.4-4                 │                  │ ncurses: segmentation fault via _nc_wrap_entry()             │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-50495                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libudev1           │ CVE-2013-4392       │ LOW      │              │ 252.33-1~deb12u1      │                  │ systemd: TOCTOU race condition when updating file            │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ permissions and SELinux security contexts...                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2013-4392                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-31437      │          │              │                       │                  │ An issue was discovered in systemd 253. An attacker can      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ modify a...                                                  │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31437                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-31438      │          │              │                       │                  │ An issue was discovered in systemd 253. An attacker can      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ truncate a...                                                │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31438                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-31439      │          │              │                       │                  │ An issue was discovered in systemd 253. An attacker can      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ modify the...                                                │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31439                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ libuuid1           │ CVE-2022-0563       │          │              │ 2.38.1-5+deb12u3      │                  │ util-linux: partial disclosure of arbitrary files in chfn    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ and chsh when compiled...                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ login              │ CVE-2023-4641       │ MEDIUM   │              │ 1:4.13+dfsg1-1+b1     │                  │ shadow-utils: possible password leak during passwd(1) change │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-4641                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┼──────────┤              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2007-5686       │ LOW      │              │                       │                  │ initscripts in rPath Linux 1 sets insecure permissions for   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ the /var/lo ......                                           │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2007-5686                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-29383      │          │              │                       │                  │ shadow: Improper input validation in shadow-utils package    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ utility chfn                                                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-29383                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2024-56433      │          │              │                       │                  │ shadow-utils: Default subordinate ID configuration in        │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ /etc/login.defs could lead to compromise                     │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-56433                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ TEMP-0628843-DBAD28 │          │              │                       │                  │ [more related to CVE-2005-4890]                              │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://security-tracker.debian.org/tracker/TEMP-0628843-DB- │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ AD28                                                         │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ mount              │ CVE-2022-0563       │          │              │ 2.38.1-5+deb12u3      │                  │ util-linux: partial disclosure of arbitrary files in chfn    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ and chsh when compiled...                                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ ncurses-base       │ CVE-2023-50495      │ MEDIUM   │              │ 6.4-4                 │                  │ ncurses: segmentation fault via _nc_wrap_entry()             │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-50495                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┤                     │          │              │                       ├──────────────────┤                                                              │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ ncurses-bin        │                     │          │              │                       │                  │                                                              │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │                                                              │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ passwd             │ CVE-2023-4641       │          │              │ 1:4.13+dfsg1-1+b1     │                  │ shadow-utils: possible password leak during passwd(1) change │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-4641                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┼──────────┤              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2007-5686       │ LOW      │              │                       │                  │ initscripts in rPath Linux 1 sets insecure permissions for   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ the /var/lo ......                                           │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2007-5686                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-29383      │          │              │                       │                  │ shadow: Improper input validation in shadow-utils package    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ utility chfn                                                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-29383                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2024-56433      │          │              │                       │                  │ shadow-utils: Default subordinate ID configuration in        │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ /etc/login.defs could lead to compromise                     │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2024-56433                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ TEMP-0628843-DBAD28 │          │              │                       │                  │ [more related to CVE-2005-4890]                              │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://security-tracker.debian.org/tracker/TEMP-0628843-DB- │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ AD28                                                         │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┼──────────┤              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ perl-base          │ CVE-2023-31484      │ HIGH     │              │ 5.36.0-7+deb12u1      │                  │ perl: CPAN.pm does not verify TLS certificates when          │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ downloading distributions over HTTPS...                      │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31484                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┼──────────┤              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2011-4116       │ LOW      │              │                       │                  │ perl: File:: Temp insecure temporary file handling           │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2011-4116                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ CVE-2023-31486      │          │              │                       │                  │ http-tiny: insecure TLS cert default                         │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-31486                   │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ sysvinit-utils     │ TEMP-0517018-A83CE6 │          │              │ 3.06-4                │                  │ [sysvinit: no-root option in expert installer exposes        │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ locally exploitable security flaw]                           │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://security-tracker.debian.org/tracker/TEMP-0517018-A8- │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ 3CE6                                                         │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│ tar                │ CVE-2005-2541       │          │              │ 1.34+dfsg-1.2+deb12u1 │                  │ tar: does not properly warn the user when extracting setuid  │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ or setgid...                                                 │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2005-2541                    │
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    ├─────────────────────┤          │              │                       ├──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>│                    │ TEMP-0290435-0B57B5 │          │              │                       │                  │ [tar&#39;</span>s rmt command may have undesired side effects<span style=color:#f92672>]</span>          │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://security-tracker.debian.org/tracker/TEMP-0290435-0B- │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ 57B5                                                         │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┤          │              ├───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ util-linux         │ CVE-2022-0563       │          │              │ 2.38.1-5+deb12u3      │                  │ util-linux: partial disclosure of arbitrary files in chfn    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ and chsh when compiled...                                    │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
+</span></span><span style=display:flex><span>├────────────────────┤                     │          │              │                       ├──────────────────┤                                                              │
+</span></span><span style=display:flex><span>│ util-linux-extra   │                     │          │              │                       │                  │                                                              │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │                                                              │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │                                                              │
+</span></span><span style=display:flex><span>├────────────────────┼─────────────────────┼──────────┼──────────────┼───────────────────────┼──────────────────┼──────────────────────────────────────────────────────────────┤
+</span></span><span style=display:flex><span>│ zlib1g             │ CVE-2023-45853      │ CRITICAL │ will_not_fix │ 1:1.2.13.dfsg-1       │                  │ zlib: integer overflow and resultant heap-based buffer       │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ overflow in zipOpenNewFileInZip4_6                           │
+</span></span><span style=display:flex><span>│                    │                     │          │              │                       │                  │ https://avd.aquasec.com/nvd/cve-2023-45853                   │
+</span></span><span style=display:flex><span>└────────────────────┴─────────────────────┴──────────┴──────────────┴───────────────────────┴──────────────────┴──────────────────────────────────────────────────────────────┘
+</span></span></code></pre></div></details><p>Полученный образ для локально запускаемой утилиты представляет из себя решето из 78 дыр информационной безопасности. Что меня не устраивает. Поэтому я продолжаю оптимизировать образ, перехожу на <code>node:23-alpine</code>. Изменение, которое Docker Scout не предложил. Trivy тоже. Итоговый <code>Dockerfile</code> выглядит так:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> node:23-alpine</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ARG</span> SERVELESS_VERSION<span style=color:#f92672>=</span><span style=color:#ae81ff>3</span>.40.0<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ARG</span> YC_PLUGIN_VERSION<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>.7.25<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># Install Serverless Framework globally and Yandex.Cloud plugin</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm install -g serverless@<span style=color:#e6db74>${</span>SERVELESS_VERSION<span style=color:#e6db74>}</span> <span style=color:#e6db74>&#34;@yandex-cloud/serverless-plugin@</span><span style=color:#e6db74>${</span>YC_PLUGIN_VERSION<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /app</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>CMD</span> [ <span style=color:#e6db74>&#34;serverless&#34;</span> ]<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><p>Собираю. Проверяю с помощью Trivy. 0 найденных уязвимостей. Успех!</p><details><summary>Лог сканирования Trivy образа на основе <code>23-alpine</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image vitkhab/serverless:3.40.0-alpine
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>2025-02-23T19:13:19Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Need to update DB
+</span></span><span style=display:flex><span>2025-02-23T19:13:19Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Downloading vulnerability DB...
+</span></span><span style=display:flex><span>2025-02-23T19:13:19Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Downloading artifact...        repo<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;mirror.gcr.io/aquasec/trivy-db:2&#34;</span>
+</span></span><span style=display:flex><span>59.40 MiB / 59.40 MiB <span style=color:#f92672>[</span>--------------------------------------------------------------------------------------------------------------------<span style=color:#f92672>]</span> 100.00% 7.80 MiB p/s 7.8s
+</span></span><span style=display:flex><span>2025-02-23T19:13:28Z    INFO    <span style=color:#f92672>[</span>vulndb<span style=color:#f92672>]</span> Artifact successfully downloaded       repo<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;mirror.gcr.io/aquasec/trivy-db:2&#34;</span>
+</span></span><span style=display:flex><span>2025-02-23T19:13:28Z    INFO    <span style=color:#f92672>[</span>vuln<span style=color:#f92672>]</span> Vulnerability scanning is enabled
+</span></span><span style=display:flex><span>2025-02-23T19:13:28Z    INFO    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> Secret scanning is enabled
+</span></span><span style=display:flex><span>2025-02-23T19:13:28Z    INFO    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> If your scanning is slow, please try <span style=color:#e6db74>&#39;--scanners vuln&#39;</span> to disable secret scanning
+</span></span><span style=display:flex><span>2025-02-23T19:13:28Z    INFO    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> Please see also https://aquasecurity.github.io/trivy/v0.59/docs/scanner/secret#recommendation <span style=color:#66d9ef>for</span> faster secret detection
+</span></span><span style=display:flex><span>2025-02-23T19:13:40Z    WARN    <span style=color:#f92672>[</span>secret<span style=color:#f92672>]</span> The size of the scanned file is too large. It is recommended to use <span style=color:#e6db74>`</span>--skip-files<span style=color:#e6db74>`</span> <span style=color:#66d9ef>for</span> this file to avoid high memory consumption.     file_path<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;root/.npm/_cacache/content-v2/sha512/fb/d4/a23a8bfe2fc03c37fc207d930a2743aafb8c6ebecc3b29b6aa40020751f95d3f6491cc32fb6e30e9ff503cc8aba0be9f43200465ceccd78a640fc56fa501&#34;</span> size <span style=color:#f92672>(</span>MB<span style=color:#f92672>)=</span><span style=color:#ae81ff>16</span>
+</span></span><span style=display:flex><span>2025-02-23T19:13:50Z    INFO    <span style=color:#f92672>[</span>python<span style=color:#f92672>]</span> Licenses acquired from one or more METADATA files may be subject to additional terms. Use <span style=color:#e6db74>`</span>--debug<span style=color:#e6db74>`</span> flag to see all affected packages.
+</span></span><span style=display:flex><span>2025-02-23T19:13:50Z    INFO    Detected OS     family<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;alpine&#34;</span> version<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;3.21.3&#34;</span>
+</span></span><span style=display:flex><span>2025-02-23T19:13:50Z    INFO    <span style=color:#f92672>[</span>alpine<span style=color:#f92672>]</span> Detecting vulnerabilities...   os_version<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;3.21&#34;</span> repository<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;3.21&#34;</span> pkg_num<span style=color:#f92672>=</span><span style=color:#ae81ff>17</span>
+</span></span><span style=display:flex><span>2025-02-23T19:13:50Z    INFO    Number of language-specific files       num<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>2025-02-23T19:13:50Z    INFO    <span style=color:#f92672>[</span>python-pkg<span style=color:#f92672>]</span> Detecting vulnerabilities...
+</span></span><span style=display:flex><span>2025-02-23T19:13:50Z    INFO    <span style=color:#f92672>[</span>node-pkg<span style=color:#f92672>]</span> Detecting vulnerabilities...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>vitkhab/serverless:3.40.0-alpine <span style=color:#f92672>(</span>alpine 3.21.3<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Total: <span style=color:#ae81ff>0</span> <span style=color:#f92672>(</span>UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0<span style=color:#f92672>)</span>
+</span></span></code></pre></div></details><p>Смотрю, что покажет Docker Scout. Найдена уязвимость в пакетах Node.js, которой нет в логе Trivy. А получилось так из-за ошибки парсинга <a href=https://advisories.gitlab.com/pkg/npm/axios/CVE-2023-45857/>базы CVE Gitlab</a> в <a href="https://scout.docker.com/vulnerabilities/id/CVE-2023-45857?s=gitlab&amp;n=axios&amp;t=npm&amp;vr=%3E%3D0.8.1%2C%3C1.6.0">базу Docker Scout</a>. В источнике указаны интервалы >= 1.0.0, &lt; 1.6.0 и >= 0.8.1, &lt; 0.28.0. Когда в целевой базе потерялась пара условий и итоговый интервал стал >=0.8.1, &lt;1.6.0.</p><p>А еще одна из рекомендаций Docker Scout заменить базовый образ на <code>23-slim</code>, добавив 25 уязвимостей.</p><details><summary>Лог сканирования Docker Scout образа на основе <code>23-alpine</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ docker scout quickview local://vitkhab/serverless:3.40.0-alpine
+</span></span><span style=display:flex><span>    ✓ Image stored <span style=color:#66d9ef>for</span> indexing
+</span></span><span style=display:flex><span>    ✓ SBOM obtained from attestation, <span style=color:#ae81ff>841</span> packages found
+</span></span><span style=display:flex><span>    ✓ Provenance obtained from attestation
+</span></span><span style=display:flex><span>    ✓ Pulled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target             │  local://vitkhab/serverless:3.40.0-alpine  │    0C     0H     1M     0L   
+</span></span><span style=display:flex><span>    digest           │  6bb47c73e8d3                              │                              
+</span></span><span style=display:flex><span>  Base image         │  node:23-alpine                            │    0C     0H     0M     0L   
+</span></span><span style=display:flex><span>  Updated base image │  node:22-alpine                            │    0C     0H     0M     0L   
+</span></span><span style=display:flex><span>                     │                                            │                              
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>❯ docker scout cves local://vitkhab/serverless:3.40.0-alpine
+</span></span><span style=display:flex><span>    ✓ SBOM of image already cached, <span style=color:#ae81ff>841</span> packages indexed
+</span></span><span style=display:flex><span>    ✗ Detected <span style=color:#ae81ff>1</span> vulnerable package with <span style=color:#ae81ff>1</span> vulnerability
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Overview</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    │           Analyzed Image             
+</span></span><span style=display:flex><span>────────────────────┼──────────────────────────────────────
+</span></span><span style=display:flex><span>  Target            │  local://vitkhab/serverless:3.40.0-alpine
+</span></span><span style=display:flex><span>    digest          │  6bb47c73e8d3                        
+</span></span><span style=display:flex><span>    platform        │ linux/arm64/v8                       
+</span></span><span style=display:flex><span>    vulnerabilities │    0C     0H     1M     0L           
+</span></span><span style=display:flex><span>    size            │ <span style=color:#ae81ff>163</span> MB                               
+</span></span><span style=display:flex><span>    packages        │ <span style=color:#ae81ff>841</span>                                  
+</span></span><span style=display:flex><span>                    │                                      
+</span></span><span style=display:flex><span>  Base image        │  node:23-alpine                      
+</span></span><span style=display:flex><span>                    │  3bc3c0c99ea8                        
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Packages and Vulnerabilities</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   0C     0H     1M     0L  axios 0.28.1
+</span></span><span style=display:flex><span>pkg:npm/axios@0.28.1
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Dockerfile <span style=color:#f92672>(</span>14:14<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>RUN npm install -g serverless@<span style=color:#e6db74>${</span>SERVELESS_VERSION<span style=color:#e6db74>}</span> <span style=color:#e6db74>&#34;@yandex-cloud/serverless-plugin@</span><span style=color:#e6db74>${</span>YC_PLUGIN_VERSION<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ✗ MEDIUM CVE-2023-45857 <span style=color:#f92672>[</span>OWASP Top Ten <span style=color:#ae81ff>2017</span> Category A9 - Using Components with Known Vulnerabilities<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>      https://scout.docker.com/v/CVE-2023-45857
+</span></span><span style=display:flex><span>      Affected range : &gt;<span style=color:#f92672>=</span>0.8.1                                       
+</span></span><span style=display:flex><span>                     : &lt;1.6.0                                        
+</span></span><span style=display:flex><span>      Fixed version  : 1.6.0                                         
+</span></span><span style=display:flex><span>      CVSS Score     : 6.5                                           
+</span></span><span style=display:flex><span>      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N  
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span> vulnerability found in <span style=color:#ae81ff>1</span> package
+</span></span><span style=display:flex><span>  CRITICAL  <span style=color:#ae81ff>0</span>  
+</span></span><span style=display:flex><span>  HIGH      <span style=color:#ae81ff>0</span>  
+</span></span><span style=display:flex><span>  MEDIUM    <span style=color:#ae81ff>1</span>  
+</span></span><span style=display:flex><span>  LOW       <span style=color:#ae81ff>0</span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>❯ docker scout recommendations local://vitkhab/serverless:3.40.0-alpine
+</span></span><span style=display:flex><span>    ✓ SBOM of image already cached, <span style=color:#ae81ff>841</span> packages indexed
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Target   │  local://vitkhab/serverless:3.40.0-alpine
+</span></span><span style=display:flex><span>    digest │  6bb47c73e8d3                        
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Recommended fixes</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Base image is  node:23-alpine 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Name            │  23-alpine                                                                 
+</span></span><span style=display:flex><span>  Digest          │  sha256:3bc3c0c99ea8c3f62e11a88bd049981d69d2dc5d0752d1bd80c7b341aee6a8e4   
+</span></span><span style=display:flex><span>  Vulnerabilities │    0C     0H     0M     0L                                                 
+</span></span><span style=display:flex><span>  Pushed          │ <span style=color:#ae81ff>1</span> week ago                                                                 
+</span></span><span style=display:flex><span>  Size            │ <span style=color:#ae81ff>57</span> MB                                                                      
+</span></span><span style=display:flex><span>  Packages        │ <span style=color:#ae81ff>223</span>                                                                        
+</span></span><span style=display:flex><span>  Flavor          │ alpine                                                                     
+</span></span><span style=display:flex><span>  OS              │ 3.21                                                                       
+</span></span><span style=display:flex><span>  Runtime         │ <span style=color:#ae81ff>22</span>                                                                         
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Refresh base image
+</span></span><span style=display:flex><span>  Rebuild the image using a newer base image version. Updating this may result in breaking changes.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  ✓ This image version is up to date.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Change base image
+</span></span><span style=display:flex><span>  The list displays new recommended tags in descending order, where the top results are rated as most suitable.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    Tag                    │                  Details                   │   Pushed   │       Vulnerabilities        
+</span></span><span style=display:flex><span>───────────────────────────────────────────┼────────────────────────────────────────────┼────────────┼──────────────────────────────
+</span></span><span style=display:flex><span>   22-alpine                               │ Benefits:                                  │ <span style=color:#ae81ff>1</span> week ago │    0C     0H     0M     0L   
+</span></span><span style=display:flex><span>  Image has same number of vulnerabilities │ • Same OS detected                         │            │                              
+</span></span><span style=display:flex><span>  Also known as:                           │ • Image is smaller by 1.7 MB               │            │                              
+</span></span><span style=display:flex><span>  • 22.14.0-alpine                         │ • Image has same number of vulnerabilities │            │                              
+</span></span><span style=display:flex><span>  • 22.14.0-alpine3.21                     │ • Image contains equal number of packages  │            │                              
+</span></span><span style=display:flex><span>  • 22.14-alpine                           │                                            │            │                              
+</span></span><span style=display:flex><span>  • 22.14-alpine3.21                       │ Image details:                             │            │                              
+</span></span><span style=display:flex><span>  • lts-alpine                             │ • Size: <span style=color:#ae81ff>55</span> MB                              │            │                              
+</span></span><span style=display:flex><span>  • lts-alpine3.21                         │ • Flavor: alpine                           │            │                              
+</span></span><span style=display:flex><span>  • 22-alpine3.21                          │ • OS: 3.21                                 │            │                              
+</span></span><span style=display:flex><span>  • jod-alpine                             │ • Runtime: 22.14.0                         │            │                              
+</span></span><span style=display:flex><span>  • jod-alpine3.21                         │                                            │            │                              
+</span></span><span style=display:flex><span>                                           │                                            │            │                              
+</span></span><span style=display:flex><span>                                           │                                            │            │                              
+</span></span><span style=display:flex><span>   slim                                    │ Benefits:                                  │ <span style=color:#ae81ff>1</span> week ago │    0C     0H     2M    23L   
+</span></span><span style=display:flex><span>  Tag is preferred tag                     │ • Tag is preferred tag                     │            │                  +2    +23   
+</span></span><span style=display:flex><span>  Also known as:                           │ • Tag is using slim variant                │            │                              
+</span></span><span style=display:flex><span>  • 23.8.0-slim                            │ • slim was pulled 17K times last month     │            │                              
+</span></span><span style=display:flex><span>  • 23.8-slim                              │                                            │            │                              
+</span></span><span style=display:flex><span>  • current-slim                           │ Image details:                             │            │                              
+</span></span><span style=display:flex><span>  • 23-slim                                │ • Size: <span style=color:#ae81ff>80</span> MB                              │            │                              
+</span></span><span style=display:flex><span>  • bookworm-slim                          │ • Runtime: <span style=color:#ae81ff>22</span>                              │            │                              
+</span></span><span style=display:flex><span>  • 23-bookworm-slim                       │                                            │            │                              
+</span></span><span style=display:flex><span>  • 23.8-bookworm-slim                     │                                            │            │                              
+</span></span><span style=display:flex><span>  • 23.8.0-bookworm-slim                   │                                            │            │                              
+</span></span><span style=display:flex><span>  • current-bookworm-slim                  │                                            │            │                              
+</span></span><span style=display:flex><span>                                           │                                            │            │                              
+</span></span><span style=display:flex><span>                                           │                                            │            │                              
+</span></span></code></pre></div></details></div><div class=after-post-tags><ul class=tags><li><a href=/tags/docker>docker</a></li></ul></div><div class="row PageNavigation d-flex justify-content-between font-weight-bold"><a class="d-block col-md-6 text-lg-right" href=https://vitkhab.pro/blog/2021-11-14-sound-capture-in-macos/>Захват звука в macOS &#187;</a><div class=clearfix></div></div></div></div></div><div class=container><div id=comments class="row justify-content-center mb-5"><div class=col-md-8><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//vitkhab-pro.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></div></div></div></div><div class="jumbotron fortags"><div class="d-md-flex h-100"><div class="col-md-4 transpdark align-self-center text-center h-100"><div class="d-md-flex align-items-center justify-content-center h-100"><h2 class="d-md-block d-none align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2></div></div><div class="col-md-8 p-5 align-self-center text-center"><a class="mt-1 mb-1" href=/tags/audio>audio</a>
+<a class="mt-1 mb-1" href=/tags/blog>blog</a>
+<a class="mt-1 mb-1" href=/tags/complicated-subsystem-team>complicated-subsystem team</a>
+<a class="mt-1 mb-1" href=/tags/devops>devops</a>
+<a class="mt-1 mb-1" href=/tags/docker>docker</a>
+<a class="mt-1 mb-1" href=/tags/enabling-team>enabling team</a>
+<a class="mt-1 mb-1" href=/tags/github-pages>github pages</a>
+<a class="mt-1 mb-1" href=/tags/hugo>hugo</a>
+<a class="mt-1 mb-1" href=/tags/meetup>meetup</a>
+<a class="mt-1 mb-1" href=/tags/other>other</a>
+<a class="mt-1 mb-1" href=/tags/personal-brand>personal brand</a>
+<a class="mt-1 mb-1" href=/tags/platform-team>platform team</a>
+<a class="mt-1 mb-1" href=/tags/presentation>presentation</a>
+<a class="mt-1 mb-1" href=/tags/stream-aligned-team>stream-aligned team</a>
+<a class="mt-1 mb-1" href=/tags/streaming>streaming</a>
+<a class="mt-1 mb-1" href=/tags/team-topologies>team topologies</a>
+<a class="mt-1 mb-1" href=/tags/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C>запись</a>
+<a class="mt-1 mb-1" href=/tags/%D0%BA%D0%BE%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82>конспект</a>
+<a class="mt-1 mb-1" href=/tags/%D1%83%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B7%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F%D0%BC%D0%B8>управление знаниями</a></div></div></div><footer class=footer><div class=container><div class=row><div class="col-md-6 col-sm-6 text-center text-lg-left">&copy; Copyright Vitaly Khabarov - All rights reserved</div><div class="col-md-6 col-sm-6 text-center text-lg-right"><a target=_blank rel=noopener href=https://www.wowthemes.net>Mediumish Theme</a> by WowThemes.net</div></div></div></footer></div><script src=https://code.jquery.com/jquery-3.4.1.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js integrity=sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut crossorigin=anonymous></script><script src=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script><script src=https://vitkhab.pro/js/mediumish.84218587c174fd40bce82544b98851670f0b124a7324b349c54a4065e2b32ffc.js integrity="sha256-hCGFh8F0/UC86CVEuYhRZw8LEkpzJLNJxUpAZeKzL/w="></script><script type=text/javascript>(function(e,t,n,s,o,i,a){e[o]=e[o]||function(){(e[o].a=e[o].a||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym"),ym("61600576","init",{clickmap:!0,trackLinks:!0,accurateTrackBounce:!0})</script><noscript><div><img src=https://mc.yandex.ru/watch/61600576 style=position:absolute;left:-9999px alt></div></noscript></body></html>
