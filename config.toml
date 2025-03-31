@@ -67,4 +67,4 @@ enableGitInfo = true
     url = "/"
 
 [markup.goldmark.renderer]
-  unsafe= true
+  unsafe = true
