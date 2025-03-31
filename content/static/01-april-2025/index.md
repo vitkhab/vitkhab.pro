@@ -1,7 +1,7 @@
 ---
 title: "Котоняня на выезде"
-date: 2025-04-01
-publishdate: 2025-04-01
+date: 2025-04-01T00:00:00+03:00
+publishdate: 2025-04-01T00:00:00+03:00
 tags: ["1 april"]
 draft: false
 comments: true

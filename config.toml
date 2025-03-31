@@ -64,7 +64,7 @@ enableGitInfo = true
     name = "Обо мне"
     identifier = "about"
     weight = 400
-    url = "/"
+    url = "/static/01-april-2025/"
 
 [markup.goldmark.renderer]
   unsafe = true
